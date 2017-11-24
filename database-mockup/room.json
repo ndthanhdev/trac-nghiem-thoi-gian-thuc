@@ -1,0 +1,31 @@
+// tất cả thông tin cần cho một phòng thi
+{
+    "id": "",
+    "password": "", // nullable
+    "questions": [
+        {
+            "id": "",
+            "content": "",
+            "answers": [
+                {
+                    "id": "",
+                    "content": "",
+                    "isCorrect": true
+                },
+                {
+                    "id": "",
+                    "content": "",
+                    "isCorrect": false
+                }
+            ]
+        }
+    ],
+    "examinees": [
+        {
+            "examineeName": ""
+        },
+        {
+            "examineeName": ""
+        }
+    ]
+}

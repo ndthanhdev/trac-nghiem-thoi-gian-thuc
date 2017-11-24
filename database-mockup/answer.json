@@ -1,0 +1,11 @@
+// lưu câu trả lời của các thí sinh
+{
+    "roomId": "",
+    "examineeName": "",
+    "anwsers": [
+        {
+            "questionId": "",
+            "answerId": ""
+        }
+    ]
+}
