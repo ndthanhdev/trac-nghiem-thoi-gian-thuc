@@ -9,6 +9,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 import { CreateGameRoutingModule } from './create-game-routing.module';
 import { CreateGameComponent } from './create-game/create-game.component';
@@ -31,7 +33,9 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatInputModule,
     FormsModule,
-    
+    MatListModule,
+    MatCheckboxModule,
+
     StoreModule.forFeature('create-game', reducer),
     EffectsModule.forFeature([CreateGameEffects]),
 

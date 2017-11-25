@@ -1,9 +1,9 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row class="d-flex justify-content-around">
+    <mat-toolbar-row class="d-flex justify-content-between">
         <div>
             Test's code is {{code}}
         </div>
-        <div class="m-auto">
+        <div>
             <span>{{(questions$|async).length}} questions in</span>
             <mat-form-field class="ml-1 w-50">
                 <mat-select [(value)]="time">
@@ -21,12 +21,17 @@
 </mat-toolbar>
 <div class="main-container">
     <div class="left">
-        <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question" (add)="onAddQuestion($event)"></app-prepared-question>
+        <!-- <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question" (add)="onAddQuestion($event)"></app-prepared-question> -->
+        <mat-selection-list #preparedQuestions>
+            <mat-list-option *ngFor="let question of preparedQuestions$|async">
+                {{question.question}}
+            </mat-list-option>
+        </mat-selection-list>
     </div>
     <div class="right">
         <app-create-question (addQuestion)="onAddQuestion($event)"></app-create-question>
-            <ng-template [ngIf]="questions$|async">
-                <app-question-box class="m-1" *ngFor="let question of questions$|async" [question]="question" (remove)="onRemoveQuestion($event)"></app-question-box>
-            </ng-template>
+        <ng-template [ngIf]="questions$|async">
+            <app-question-box class="m-1" *ngFor="let question of questions$|async" [question]="question" (remove)="onRemoveQuestion($event)"></app-question-box>
+        </ng-template>
     </div>
 </div>

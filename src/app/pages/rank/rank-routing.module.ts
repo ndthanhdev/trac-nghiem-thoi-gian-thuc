@@ -1,9 +1,17 @@
 import { NgModule } from '@angular/core';
+<<<<<<< HEAD
+import { Routes, RouterModule } from '@angular/router';
+import { RankComponent } from './rank/rank.component';
+
+const routes: Routes = [
+  { path: "", component: RankComponent }
+=======
 import { RouterModule, Routes } from '@angular/router';
 import { RankComponent } from './rank/rank.component';
 
 const routes: Routes = [
   { path: "", pathMatch: "full", component: RankComponent }
+>>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
 ];
 
 @NgModule({
