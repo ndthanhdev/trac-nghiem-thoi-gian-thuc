@@ -17,7 +17,7 @@ export interface State {
 }
 
 export const initialState: State = {
-  code: null,
+  code: null, // abc
   users: [{
     username: null,
     name: null

@@ -20,30 +20,44 @@ import { initSocket, socketOnEventObservable } from '../../../services/socket';
   styleUrls: ["./rank.component.scss"]
 })
 export class RankComponent implements OnInit, OnDestroy {
-  private data: any;
+  private waitingSocketData: any;
+  private chartChangesSocketData: any;
 
   displayedColumns = ['position', 'name', 'correct', 'total'];
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
   private socketSub;
+  private socketWaitingSub;
+
+  private socketChartChangeSub;
 
   constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
-    this.socketSub = this.store.select(fromRoot.getGameCode)
+    this.socketWaitingSub = this.store.select(fromRoot.getGameCode)
       .filter(gameCode => !!gameCode)
       .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
       .flatMap(socket => socketOnEventObservable(socket, 'waiting'))
       .subscribe(result => {
-        console.log('Message received: ', result);
+        console.log('Message in Waiting room received: ', result);
         // result :: {users :: Array User, code :: String}
-        this.data = result;
+        this.waitingSocketData = result;
+      });
+
+    this.socketChartChangeSub = this.store.select(fromRoot.getGameCode)
+      .filter(gameCode => !!gameCode)
+      .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
+      .flatMap(socket => socketOnEventObservable(socket, 'chartChanges'))
+      .subscribe(result => {
+        console.log('Message in chart changes room received: ', result);
+        // result :: {users :: Array User, code :: String}
+        this.chartChangesSocketData = result;
       });
   }
 
   ngOnDestroy(): void {
-    this.socketSub.unsubscribe();
+    this.socketWaitingSub.unsubscribe();
   }
 
 }
