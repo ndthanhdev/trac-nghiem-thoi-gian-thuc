@@ -2,12 +2,16 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-rank',
-  templateUrl: './rank.component.html',
-  styleUrls: ['./rank.component.scss']
+  template: `
+    <p>
+      rank works!
+    </p>
+  `
 })
 export class RankComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+  }
 
   ngOnInit() {
   }
