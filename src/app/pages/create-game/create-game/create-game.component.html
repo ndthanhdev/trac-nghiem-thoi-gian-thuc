@@ -1,0 +1,16 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row>
+        <span class="app-spacer"></span>
+        <button mat-raised-button>Tiếp theo</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="main-container">
+    <div class="left">
+        <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question"></app-prepared-question>
+    </div>
+    <div class="right">
+        <ng-template [ngIf]="preparedQuestions$|async">
+            <app-question-box class="m-1" *ngFor="let question of preparedQuestions$|async" [question]="question"></app-question-box>
+        </ng-template>
+    </div>
+</div>

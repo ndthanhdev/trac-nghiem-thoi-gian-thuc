@@ -1,0 +1,11 @@
+<mat-card>
+  <mat-card-title>{{question?.question}}</mat-card-title>
+  <mat-card-content>
+    <mat-radio-group class="d-flex flex-column">
+      <mat-radio-button class="" *ngFor="let choice of question.choices" [value]="choice" [checked]="choice===question.answer">{{choice}}</mat-radio-button>
+    </mat-radio-group>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="warn">Xóa</button>
+  </mat-card-actions>
+</mat-card>
