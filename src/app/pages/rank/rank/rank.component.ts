@@ -8,8 +8,18 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ["./rank.component.scss"]
 =======
 /*
+3rd Party library
+ */
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import 'rxjs/add/operator/combineLatest';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/mergeMap';
+/*
 Project file imports
  */
+import * as fromRoot from '../../../reducer';
+import { initSocket, socketOnEventObservable } from '../../../services/socket';
 
 @Component({
   selector: 'app-rank',
@@ -20,7 +30,8 @@ Project file imports
   `
 >>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
 })
-export class RankComponent implements OnInit {
+export class RankComponent implements OnInit, OnDestroy {
+  private data: any;
 
 <<<<<<< HEAD
   displayedColumns = ['position', 'name', 'correct', 'total'];
@@ -28,10 +39,26 @@ export class RankComponent implements OnInit {
 
   constructor() {
 =======
+  private socketSub;
+
+  constructor(private store: Store<fromRoot.State>) {
 >>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
   }
 
   ngOnInit() {
+    this.socketSub = this.store.select(fromRoot.getGameCode)
+      .filter(gameCode => !!gameCode)
+      .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
+      .flatMap(socket => socketOnEventObservable(socket, 'waiting'))
+      .subscribe(result => {
+        console.log('Message received: ', result);
+        // result :: {users :: Array User, code :: String}
+        this.data = result;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.socketSub.unsubscribe();
   }
 
 }
