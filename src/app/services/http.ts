@@ -14,7 +14,7 @@ const httpOptions = {
 
 @Injectable()
 export class HttpService {
-    private baseUrl = "http://172.16.2.41:8000";  // URL to web api
+    private baseUrl = "http://172.16.2.41:3000";  // URL to web api
     private loadQuestionsUrl = this.baseUrl + "/questions";
     private createGameUrl = this.baseUrl + "/games";
     private startGameUrl = `${this.baseUrl}/start`;

@@ -21,12 +21,12 @@
 </mat-toolbar>
 <div class="main-container">
     <div class="left">
-        <!-- <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question" (add)="onAddQuestion($event)"></app-prepared-question> -->
-        <mat-selection-list #preparedQuestions>
+        <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question" (add)="onAddQuestion($event)"></app-prepared-question>
+        <!-- <mat-selection-list #preparedQuestions>
             <mat-list-option *ngFor="let question of preparedQuestions$|async">
                 {{question.question}}
             </mat-list-option>
-        </mat-selection-list>
+        </mat-selection-list> -->
     </div>
     <div class="right">
         <app-create-question (addQuestion)="onAddQuestion($event)"></app-create-question>

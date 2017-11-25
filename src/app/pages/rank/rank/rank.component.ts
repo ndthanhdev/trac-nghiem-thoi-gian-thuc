@@ -1,12 +1,4 @@
-<<<<<<< HEAD
-import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-
-@Component({
-  selector: 'app-rank',
-  templateUrl: './rank.component.html',
-  styleUrls: ["./rank.component.scss"]
-=======
 /*
 3rd Party library
  */
@@ -15,6 +7,7 @@ import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/mergeMap';
+
 /*
 Project file imports
  */
@@ -23,26 +16,18 @@ import { initSocket, socketOnEventObservable } from '../../../services/socket';
 
 @Component({
   selector: 'app-rank',
-  template: `
-    <p>
-      rank component works!
-    </p>
-  `
->>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
+  templateUrl: './rank.component.html',
+  styleUrls: ["./rank.component.scss"]
 })
 export class RankComponent implements OnInit, OnDestroy {
   private data: any;
 
-<<<<<<< HEAD
   displayedColumns = ['position', 'name', 'correct', 'total'];
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
-  constructor() {
-=======
   private socketSub;
 
   constructor(private store: Store<fromRoot.State>) {
->>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
   }
 
   ngOnInit() {
