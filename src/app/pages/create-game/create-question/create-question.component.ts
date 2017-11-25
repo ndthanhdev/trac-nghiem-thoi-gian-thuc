@@ -17,11 +17,11 @@ export class CreateQuestionComponent implements OnInit {
 
   canAdd: boolean = false;
   question = "";
-  answer: string;
-  c1: string;
-  c2: string;
-  c3: string;
-  c4: string;
+  answer: string = "";
+  c1: string = "";
+  c2: string = "";
+  c3: string = "";
+  c4: string = "";
 
   @Output()
   addQuestion: EventEmitter<any> = new EventEmitter();

@@ -16,7 +16,7 @@
     </mat-form-field>
   </mat-card-title>
   <mat-card-content>
-    <mat-radio-group class="d-flex flex-column">
+    <mat-radio-group class="d-flex flex-column" [(ngModel)]="answer">
       <mat-radio-button [value]="c1">
         <mat-form-field>
           <input matInput placeholder="choice 1" [(ngModel)]="c1">
