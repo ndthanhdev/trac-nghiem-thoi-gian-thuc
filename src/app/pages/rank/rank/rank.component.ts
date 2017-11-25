@@ -1,7 +1,7 @@
 /*
 3rd Party library
  */
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import 'rxjs/add/operator/combineLatest';
 import 'rxjs/add/operator/filter';
@@ -20,16 +20,16 @@ import { initSocket, socketOnEventObservable } from '../../../services/socket';
     </p>
   `
 })
-export class RankComponent implements OnInit {
-
+export class RankComponent implements OnInit, OnDestroy {
   private data: any;
+
+  private socketSub;
 
   constructor(private store: Store<fromRoot.State>) {
   }
 
   ngOnInit() {
-    // observable
-    this.store.select(fromRoot.getGameCode)
+    this.socketSub = this.store.select(fromRoot.getGameCode)
       .filter(gameCode => !!gameCode)
       .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
       .flatMap(socket => socketOnEventObservable(socket, 'waiting'))
@@ -38,6 +38,10 @@ export class RankComponent implements OnInit {
         // result :: {users :: Array User, code :: String}
         this.data = result;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.socketSub.unsubscribe();
   }
 
 }
