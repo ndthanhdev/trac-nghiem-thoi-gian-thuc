@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { IQuestion } from '../models/question';
 import { Observable } from 'rxjs/Observable';
 import { HttpService } from '../../../services/http';
-import { catchError } from "rxjs/operators";
+import { catchError, last } from "rxjs/operators";
 import { of } from 'rxjs/observable/of';
 import { Store } from '@ngrx/store';
 
@@ -33,19 +33,35 @@ export class CreateGameComponent implements OnInit {
     { question: "The symbol for the chemical element iron is this.", answer: "Fe", choices: ["I", "Fe", "Zn", "Br"] }, { question: "The author of the novel A Portrait of the Artist as a Young Man is this writer.", answer: "James Joyce", choices: ["T. S. Eliot", "Samuel Beckett", "William Faulkner", "James Joyce"] }, { question: "The capital of Mongolia is this city.", answer: "Ulaanbaatar", choices: ["Davao", "Islamabad", "Quezon", "Ulaanbaatar"] }, { question: "Mitochondrias function in cells is to perform this.", answer: "To convert organic materials into energy", choices: ["To control chemical reactions within the cytoplasm", "To store information needed for cellular division", "To convert organic materials into energy", "To process proteins targeted to the plasma membrane"] }, { question: "The US bought Alaska in this year.", answer: "1867", choices: ["1942", "1882", "1854", "1867"] }, { question: "The 23rd US President was in office during this period.", answer: "1889 - 1893", choices: ["1909 - 1913", "1889 - 1893", "1837 - 1841", "1877 - 1881"] }
   ]);
 
-
+  questions$: Observable<IQuestion[]> = of([]);
+  questions: IQuestion[];
+  time = "10";
+  code = this.randomCode();
 
   constructor(private httpService: HttpService, private store: Store<fromReducer.State>) { }
 
   ngOnInit() {
-    // this.loadQuestions();
+    this.preparedQuestions$ = this.store.select(fromReducer.getPreparedQuestions);
+    this.questions$ = this.store.select(fromReducer.getQuestions);
+    this.questions$.subscribe(questions => this.questions = questions);
     this.store.dispatch(new fromAction.Load());
   }
 
-  loadQuestions() {
-    // this.preparedQuestions$ = this.httpService.getQuestions();
+  onAddQuestion(question: IQuestion) {
+    this.store.dispatch(new fromAction.AddQuestion({ question }));
   }
 
+  onRemoveQuestion(question: IQuestion) {
+    this.store.dispatch(new fromAction.RemoveQuestion({ question }));
+  }
 
+  createGame() {
+    this.store.dispatch(new fromAction.Next({ code: "123", questions: this.questions, time: parseInt(this.time) }));
+  }
+
+  randomCode(length: number = 6): string {
+    const min = Math.pow(10, length);
+    return "" + Math.floor(min + 9 * min * Math.random());
+  }
 
 }

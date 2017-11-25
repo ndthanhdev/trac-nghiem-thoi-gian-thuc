@@ -1,16 +1,32 @@
 <mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <span class="app-spacer"></span>
-        <button mat-raised-button>Tiếp theo</button>
+    <mat-toolbar-row class="d-flex justify-content-around">
+        <div>
+            Test's code is {{code}}
+        </div>
+        <div class="m-auto">
+            <span>{{(questions$|async).length}} questions in</span>
+            <mat-form-field class="ml-1 w-50">
+                <mat-select [(value)]="time">
+                    <mat-option value="10"> 10 minutes</mat-option>
+                    <mat-option value="15"> 15 minutes</mat-option>
+                    <mat-option value="20"> 20 minutes</mat-option>
+                    <mat-option value="25"> 25 minutes</mat-option>
+                    <mat-option value="30"> 30 minutes</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <!-- <span class="app-spacer"></span> -->
+        <button mat-raised-button [disabled]="(questions$|async).length===0" (click)="createGame()">Next</button>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="main-container">
     <div class="left">
-        <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question"></app-prepared-question>
+        <app-prepared-question *ngFor="let question of preparedQuestions$|async" [question]="question" (add)="onAddQuestion($event)"></app-prepared-question>
     </div>
     <div class="right">
-        <ng-template [ngIf]="preparedQuestions$|async">
-            <app-question-box class="m-1" *ngFor="let question of preparedQuestions$|async" [question]="question"></app-question-box>
-        </ng-template>
+        <app-create-question (addQuestion)="onAddQuestion($event)"></app-create-question>
+            <ng-template [ngIf]="questions$|async">
+                <app-question-box class="m-1" *ngFor="let question of questions$|async" [question]="question" (remove)="onRemoveQuestion($event)"></app-question-box>
+            </ng-template>
     </div>
 </div>

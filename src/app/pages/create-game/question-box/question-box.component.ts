@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { IQuestion } from '../models/question';
 
 @Component({
@@ -10,6 +10,9 @@ export class QuestionBoxComponent implements OnInit {
 
   @Input()
   question: IQuestion;
+
+  @Output()
+  remove: EventEmitter<any> = new EventEmitter();
 
   constructor() { }
 

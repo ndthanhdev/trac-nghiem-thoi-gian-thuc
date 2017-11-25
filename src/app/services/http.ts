@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 import { IQuestion } from '../pages/create-game/models/question';
 import { log } from 'util';
+import { INextActionPayload } from '../pages/create-game/store/action/index';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -13,8 +14,10 @@ const httpOptions = {
 
 @Injectable()
 export class HttpService {
-    private baseUrl = "http://172.16.2.41:3000";  // URL to web api
+    private baseUrl = "http://172.16.2.41:8000";  // URL to web api
     private loadQuestionsUrl = this.baseUrl + "/questions";
+    private createGameUrl = this.baseUrl + "/games";
+    private startGameUrl = `${this.baseUrl}/start`;
 
     constructor(private http: HttpClient) { }
 
@@ -22,8 +25,26 @@ export class HttpService {
     getQuestions(): Observable<IQuestion[]> {
         return this.http.get<IQuestion[]>(this.loadQuestionsUrl)
             .pipe(
-            tap(heroes => this.log(`fetched heroes`)),
-            catchError(this.handleError('getHeroes', undefined))
+            tap(questions => this.log(`fetched questions`)),
+            catchError(this.handleError('getQuestions', undefined))
+            );
+    }
+
+    /** POST game to the server */
+    createGame(body: INextActionPayload): Observable<INextActionPayload> {
+        return this.http.post<INextActionPayload>(this.createGameUrl, body)
+            .pipe(
+            tap(data => this.log(`created game`)),
+            catchError(this.handleError('createGame', undefined))
+            );
+    }
+
+    /** POST game to the server */
+    startGame(body: INextActionPayload): Observable<INextActionPayload> {
+        return this.http.post<INextActionPayload>(this.createGameUrl, body)
+            .pipe(
+            tap(data => this.log(`created game`)),
+            catchError(this.handleError('createGame', undefined))
             );
     }
 
