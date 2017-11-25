@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -5,13 +6,29 @@ import { MatTableDataSource } from '@angular/material/table';
   selector: 'app-rank',
   templateUrl: './rank.component.html',
   styleUrls: ["./rank.component.scss"]
+=======
+/*
+Project file imports
+ */
+
+@Component({
+  selector: 'app-rank',
+  template: `
+    <p>
+      rank component works!
+    </p>
+  `
+>>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
 })
 export class RankComponent implements OnInit {
 
+<<<<<<< HEAD
   displayedColumns = ['position', 'name', 'correct', 'total'];
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
   constructor() {
+=======
+>>>>>>> b61f8bc34267b8880c48ea41d942806a250ec07e
   }
 
   ngOnInit() {
