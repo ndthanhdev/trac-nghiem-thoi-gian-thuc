@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
+import { RankComponent } from './rank/rank.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  { path: "", pathMatch: "full", component: RankComponent }
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
