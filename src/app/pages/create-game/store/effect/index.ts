@@ -10,21 +10,24 @@ import { HttpService } from "../../../../services/http";
 import { of } from "rxjs/observable/of";
 import { forEach } from "@angular/router/src/utils/collection";
 import { IQuestion } from "../../models/question";
-
+import { Router } from "@angular/router";
 @Injectable()
 export class CreateGameEffects {
-    constructor(private actions$: Actions, private httpService: HttpService) { }
+    constructor(private actions$: Actions, private httpService: HttpService, private router: Router) { }
 
     @Effect()
     load$ = this.actions$.ofType(fromActions.LOAD)
         .concatMap(() => this.httpService.getQuestions()
-        .concatMap(questions => of(new fromActions.LoadSuccess({ questions })))
-        .catch(() => of(new fromActions.LoadFailure())));
+            .concatMap(questions => of(new fromActions.LoadSuccess({ questions })))
+            .catch(() => of(new fromActions.LoadFailure())));
 
     @Effect()
     next$ = this.actions$.ofType(fromActions.NEXT)
         .map((action: fromActions.Next) => action.payload)
         .concatMap(payload => this.httpService.createGame(payload)
-            .concatMap(nextActionPayload => of(new fromActions.NextSuccess(nextActionPayload)))
+            .concatMap(nextActionPayload => {
+                this.router.navigate(["/rank"]);
+                return of(new fromActions.NextSuccess(nextActionPayload));
+            })
             .catch(() => of(new fromActions.NextFailure())));
 }

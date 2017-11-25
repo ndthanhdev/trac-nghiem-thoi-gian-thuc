@@ -1,0 +1,44 @@
+<mat-toolbar color="primary">
+    <mat-toolbar-row class="d-flex justify-content-between">
+        <div>
+            Test's code is 123
+        </div>
+        <div>count down</div>
+        <button mat-raised-button class="align-items-end">Start</button>
+        <button *ngIf="false" mat-raised-button class="align-items-end">New game</button>
+    </mat-toolbar-row>
+</mat-toolbar>
+<div class="container d-flex flex-column my-3 justify-content-center">
+    <mat-table #table [dataSource]="dataSource">
+
+        <!--- Note that these columns can be defined in any order.
+                                          The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="position">
+            <mat-header-cell *matHeaderCellDef> No. </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <!-- Weight Column -->
+        <ng-container matColumnDef="correct">
+            <mat-header-cell *matHeaderCellDef> Correct </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.correct}} </mat-cell>
+        </ng-container>
+
+        <!-- Color Column -->
+        <ng-container matColumnDef="total">
+            <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.total}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+</div>
