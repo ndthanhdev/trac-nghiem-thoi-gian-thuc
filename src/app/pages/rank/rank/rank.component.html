@@ -4,7 +4,7 @@
             Test's code is {{code}}
         </div>
         <!-- <div>{{time$|async}}</div> -->
-        <button mat-raised-button class="align-items-end" (click)="startGame()">Start</button>
+        <button mat-raised-button [disabled]="isStarted" class="align-items-end" (click)="startGame()">Start</button>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="container d-flex flex-column my-3 justify-content-center">

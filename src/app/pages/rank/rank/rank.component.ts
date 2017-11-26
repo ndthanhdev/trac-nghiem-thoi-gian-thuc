@@ -39,7 +39,7 @@ export class RankComponent implements OnInit, OnDestroy {
   private routeSub: Subscription;
   code = localStorage.getItem("code");
 
-  // isStarted$ = this.store.select(fromReducer.getGameIsStarted);
+  isStarted = false;
   // time$ = this.store.select(fromReducer.getGameTime);
 
   coutndown: number;
@@ -98,6 +98,7 @@ export class RankComponent implements OnInit, OnDestroy {
 
   startGame() {
     this.store.dispatch(new fromAction.StartGame({ code: this.code }));
+    this.isStarted = true;
     // let h = 3600;
     // Observable.timer(0, 1000).take(3600).map(() => this.store.dispatch(new fromAction.CountDown()));
   }
