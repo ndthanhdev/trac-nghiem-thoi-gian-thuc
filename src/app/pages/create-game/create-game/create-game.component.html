@@ -7,16 +7,15 @@
             <span>{{(questions$|async).length}} questions in</span>
             <mat-form-field class="ml-1 w-50">
                 <mat-select [(value)]="time">
-                    <mat-option value="10"> 10 minutes</mat-option>
-                    <mat-option value="15"> 15 minutes</mat-option>
-                    <mat-option value="20"> 20 minutes</mat-option>
-                    <mat-option value="25"> 25 minutes</mat-option>
                     <mat-option value="30"> 30 minutes</mat-option>
+                    <mat-option value="40"> 40 minutes</mat-option>
+                    <mat-option value="50"> 50 minutes</mat-option>
+                    <mat-option value="60"> 60 minutes</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
         <!-- <span class="app-spacer"></span> -->
-        <button mat-raised-button [disabled]="(questions$|async).length===0" (click)="createGame()">Next</button>
+        <button mat-raised-button color="warn" [disabled]="(questions$|async).length===0" (click)="createGame()">Next</button>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="main-container">

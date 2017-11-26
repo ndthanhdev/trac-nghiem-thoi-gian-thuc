@@ -37,7 +37,7 @@ export class CreateGameComponent implements OnInit {
 
   questions$: Observable<IQuestion[]> = of([]);
   questions: IQuestion[];
-  time = "10";
+  time = "60";
   code = localStorage.getItem("code");
 
   constructor(private httpService: HttpService, private store: Store<fromReducer.State>) { }
