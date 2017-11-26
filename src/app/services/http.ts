@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { IQuestion } from '../pages/create-game/models/question';
 import { log } from 'util';
 import { INextActionPayload } from '../pages/create-game/store/action/index';
+import { State as RankState } from '../pages/rank/reducer/index';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -17,7 +18,7 @@ export class HttpService {
     private baseUrl = "http://172.16.2.41:3000";  // URL to web api
     private loadQuestionsUrl = this.baseUrl + "/questions";
     private createGameUrl = this.baseUrl + "/games";
-    private startGameUrl = `${this.baseUrl}/start`;
+    private startGameUrl = `${this.baseUrl}/games/start`;
 
     constructor(private http: HttpClient) { }
 
@@ -40,11 +41,11 @@ export class HttpService {
     }
 
     /** POST game to the server */
-    startGame(body: INextActionPayload): Observable<INextActionPayload> {
-        return this.http.post<INextActionPayload>(this.createGameUrl, body)
+    startGame(data: { code: string }): Observable<RankState> {
+        return this.http.post<RankState>(this.startGameUrl, data)
             .pipe(
-            tap(data => this.log(`created game`)),
-            catchError(this.handleError('createGame', undefined))
+            tap(data => this.log(`startGame`)),
+            catchError(this.handleError('startGame', undefined))
             );
     }
 
@@ -70,6 +71,6 @@ export class HttpService {
 
     /** Log a HeroService message with the MessageService */
     private log(message: string) {
-        console.log('HeroService: ' + message);
+        console.log('HttpService: ' + message);
     }
 }

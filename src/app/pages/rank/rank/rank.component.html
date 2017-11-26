@@ -1,11 +1,10 @@
 <mat-toolbar color="primary">
     <mat-toolbar-row class="d-flex justify-content-between">
         <div>
-            Test's code is 123
+            Test's code is {{code}}
         </div>
-        <div>count down</div>
-        <button mat-raised-button class="align-items-end">Start</button>
-        <button *ngIf="false" mat-raised-button class="align-items-end">New game</button>
+        <div>{{time$|async}}</div>
+        <button mat-raised-button [disabled]="isStarted$|async" class="align-items-end" (click)="startGame()">Start</button>
     </mat-toolbar-row>
 </mat-toolbar>
 <div class="container d-flex flex-column my-3 justify-content-center">
@@ -30,12 +29,6 @@
         <ng-container matColumnDef="correct">
             <mat-header-cell *matHeaderCellDef> Correct </mat-header-cell>
             <mat-cell *matCellDef="let element"> {{element.correct}} </mat-cell>
-        </ng-container>
-
-        <!-- Color Column -->
-        <ng-container matColumnDef="total">
-            <mat-header-cell *matHeaderCellDef> Total </mat-header-cell>
-            <mat-cell *matCellDef="let element"> {{element.total}} </mat-cell>
         </ng-container>
 
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

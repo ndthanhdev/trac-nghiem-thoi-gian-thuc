@@ -11,15 +11,15 @@
 </div> -->
 <mat-card>
   <mat-card-title>
-    <mat-form-field>
+    <mat-form-field class="w-100">
       <input matInput placeholder="Question" [(ngModel)]="question">
     </mat-form-field>
   </mat-card-title>
   <mat-card-content>
     <mat-radio-group class="d-flex flex-column" [(ngModel)]="answer">
-      <mat-radio-button [value]="c1">
-        <mat-form-field>
-          <input matInput placeholder="choice 1" [(ngModel)]="c1">
+      <mat-radio-button [value]="c1" class="ml-5 w-100">
+        <mat-form-field  class="w-75">
+          <input matInput class="w-75" placeholder="choice 1" [(ngModel)]="c1">
         </mat-form-field>
       </mat-radio-button>
       <mat-radio-button [value]="c2">

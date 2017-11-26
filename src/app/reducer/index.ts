@@ -2,15 +2,13 @@
 3rd Party library
  */
 import * as fromRouterStore from '@ngrx/router-store';
-import { createSelector } from 'reselect';
 /*
 Project file imports
  */
-import * as fromGame from './game';
+import { createSelector, createFeatureSelector } from '@ngrx/store';
 
 export interface State {
   router: fromRouterStore.RouterReducerState;
-  game: fromGame.State;
 }
 
 export const initialState = {
@@ -20,11 +18,6 @@ export const initialState = {
 
 
 export const reducer = {
-  router: fromRouterStore.routerReducer,
-  game: fromGame.reducer
+  router: fromRouterStore.routerReducer
 };
-
-const getGameState = state => state.game;
-
-export const getGameCode = createSelector(getGameState, fromGame.getCode);
 

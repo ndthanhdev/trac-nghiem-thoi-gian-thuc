@@ -11,8 +11,15 @@ import 'rxjs/add/operator/mergeMap';
 /*
 Project file imports
  */
-import * as fromRoot from '../../../reducer';
+import * as fromReducer from '..//reducer';
+import * as fromAction from "../action";
 import { initSocket, socketOnEventObservable } from '../../../services/socket';
+import { Subscription } from 'rxjs/Subscription';
+import { ActivatedRoute } from '@angular/router';
+import { filter } from 'rxjs/operators/filter';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/timer'
+import 'rxjs/add/operator/take'
 
 @Component({
   selector: 'app-rank',
@@ -20,10 +27,11 @@ import { initSocket, socketOnEventObservable } from '../../../services/socket';
   styleUrls: ["./rank.component.scss"]
 })
 export class RankComponent implements OnInit, OnDestroy {
+
   private waitingSocketData: any;
   private chartChangesSocketData: any;
 
-  displayedColumns = ['position', 'name', 'correct', 'total'];
+  displayedColumns = ['position', 'name', 'correct'];
   dataSource = new MatTableDataSource<Element>(ELEMENT_DATA);
 
   private socketSub;
@@ -31,11 +39,19 @@ export class RankComponent implements OnInit, OnDestroy {
 
   private socketChartChangeSub;
 
-  constructor(private store: Store<fromRoot.State>) {
+  private routeSub: Subscription;
+  code = localStorage.getItem("code");
+
+  isStarted$ = this.store.select(fromReducer.getGameIsStarted);
+  time$ = this.store.select(fromReducer.getGameTime);
+
+  coutndown: number;
+
+  constructor(private store: Store<fromReducer.State>, private _route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.socketWaitingSub = this.store.select(fromRoot.getGameCode)
+    this.socketWaitingSub = this.store.select(fromReducer.getGameCode)
       .filter(gameCode => !!gameCode)
       .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
       .flatMap(socket => socketOnEventObservable(socket, 'waiting'))
@@ -43,21 +59,46 @@ export class RankComponent implements OnInit, OnDestroy {
         console.log('Message in Waiting room received: ', result);
         // result :: {users :: Array User, code :: String}
         this.waitingSocketData = result;
+        let data = [];
+        for (let i = 0; i < (<any>result).users.length; i++) {
+          data.push(<Element>{
+            position: i + 1,
+            name: (<any>result).users[i].name,
+            correct: 0
+          });
+        }
+        this.dataSource.data = data;
+        console.log(this.dataSource.data);
       });
 
-    this.socketChartChangeSub = this.store.select(fromRoot.getGameCode)
+    this.socketChartChangeSub = this.store.select(fromReducer.getGameCode)
       .filter(gameCode => !!gameCode)
       .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
       .flatMap(socket => socketOnEventObservable(socket, 'chartChanges'))
       .subscribe(result => {
         console.log('Message in chart changes room received: ', result);
-        // result :: {users :: Array User, code :: String}
         this.chartChangesSocketData = result;
+        let data = [];
+        for (let i = 0; i < (<any>result).length; i++) {
+          data.push(<Element>{
+            position: i + 1,
+            name: (<any>result)[i].name,
+            correct: (<any>result)[i].point
+          });
+        }
+        this.dataSource.data = data;
+        console.log(this.dataSource.data);
       });
   }
 
   ngOnDestroy(): void {
     this.socketWaitingSub.unsubscribe();
+  }
+
+  startGame() {
+    this.store.dispatch(new fromAction.StartGame({ code: this.code }));
+    let h = 3600;
+    Observable.timer(0, 1000).take(3600).map(() => this.store.dispatch(new fromAction.CountDown()));
   }
 
 }
@@ -66,28 +107,7 @@ export interface Element {
   position: number;
   name: string;
   correct: number;
-  total: number;
 }
 
 const ELEMENT_DATA: Element[] = [
-  { position: 1, name: 'Hydrogen', correct: 1.0079, total: 10 },
-  { position: 2, name: 'Helium', correct: 4.0026, total: 10 },
-  { position: 3, name: 'Lithium', correct: 6.941, total: 10 },
-  { position: 4, name: 'Beryllium', correct: 9.0122, total: 10 },
-  { position: 5, name: 'Boron', correct: 10.811, total: 10 },
-  { position: 6, name: 'Carbon', correct: 12.0107, total: 10 },
-  { position: 7, name: 'Nitrogen', correct: 14.0067, total: 10 },
-  { position: 8, name: 'Oxygen', correct: 15.9994, total: 10 },
-  { position: 9, name: 'Fluorine', correct: 18.9984, total: 10 },
-  { position: 10, name: 'Neon', correct: 20.1797, total: 10 },
-  { position: 11, name: 'Sodium', correct: 22.9897, total: 10 },
-  { position: 12, name: 'Magnesium', correct: 24.305, total: 10 },
-  { position: 13, name: 'Aluminum', correct: 26.9815, total: 10 },
-  { position: 14, name: 'Silicon', correct: 28.0855, total: 10 },
-  { position: 15, name: 'Phosphorus', correct: 30.9738, total: 10 },
-  { position: 16, name: 'Sulfur', correct: 32.065, total: 10 },
-  { position: 17, name: 'Chlorine', correct: 35.453, total: 10 },
-  { position: 18, name: 'Argon', correct: 39.948, total: 10 },
-  { position: 19, name: 'Potassium', correct: 39.0983, total: 10 },
-  { position: 20, name: 'Calcium', correct: 40.078, total: 10 },
 ];

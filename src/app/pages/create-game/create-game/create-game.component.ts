@@ -8,6 +8,8 @@ import { Store } from '@ngrx/store';
 
 import * as fromReducer from "../store/reducer";
 import * as fromAction from "../store/action";
+import * as fromRankReducer from "../../rank/reducer";
+import * as fromRankAction from "../../rank/action";
 
 @Component({
   selector: 'app-create-game',
@@ -36,7 +38,7 @@ export class CreateGameComponent implements OnInit {
   questions$: Observable<IQuestion[]> = of([]);
   questions: IQuestion[];
   time = "10";
-  code = this.randomCode();
+  code = localStorage.getItem("code");
 
   constructor(private httpService: HttpService, private store: Store<fromReducer.State>) { }
 
@@ -45,6 +47,7 @@ export class CreateGameComponent implements OnInit {
     this.questions$ = this.store.select(fromReducer.getQuestions);
     this.questions$.subscribe(questions => this.questions = questions);
     this.store.dispatch(new fromAction.Load());
+    // localStorage.setItem("code", this.code);
   }
 
   onAddQuestion(question: IQuestion) {
@@ -56,7 +59,7 @@ export class CreateGameComponent implements OnInit {
   }
 
   createGame() {
-    this.store.dispatch(new fromAction.Next({ code: "123", questions: this.questions, time: parseInt(this.time) }));
+    this.store.dispatch(new fromAction.Next({ code: this.code, questions: this.questions, time: parseInt(this.time) }));
   }
 
   randomCode(length: number = 6): string {

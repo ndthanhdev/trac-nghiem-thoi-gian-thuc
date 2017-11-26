@@ -7,6 +7,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RankRoutingModule } from './rank-routing.module';
 import { RankComponent } from './rank/rank.component';
 import { RowComponent } from './row/row.component';
+import { StoreModule } from '@ngrx/store';
+import { reducer } from './reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { RankEffects } from './effect/index';
 
 @NgModule({
   imports: [
@@ -15,7 +19,9 @@ import { RowComponent } from './row/row.component';
     MatButtonModule,
     MatToolbarModule,
 
-    RankRoutingModule
+    RankRoutingModule,
+    StoreModule.forFeature('rank', reducer),
+    EffectsModule.forFeature([RankEffects]),
   ],
   declarations: [RankComponent, RowComponent]
 })

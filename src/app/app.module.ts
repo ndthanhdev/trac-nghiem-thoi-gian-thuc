@@ -15,8 +15,10 @@ import { CustomRouterStateSerializer } from './reducer/router';
 import { HttpService } from './services/http';
 import { HttpClientModule } from '@angular/common/http';
 import { EffectsModule } from '@ngrx/effects';
+import { RouterEffects } from "./effect";
 
-
+// localStorage.setItem("code", "0");
+localStorage.setItem("code", randomCode(3));
 
 @NgModule({
   declarations: [
@@ -36,7 +38,7 @@ import { EffectsModule } from '@ngrx/effects';
      * @ngrx/router-store keeps router state up-to-date in the store.
      */
     StoreRouterConnectingModule,
-    EffectsModule.forRoot([]),
+    EffectsModule.forRoot([RouterEffects]),
     HttpClientModule,
 
     AppRoutingModule
@@ -53,3 +55,8 @@ import { EffectsModule } from '@ngrx/effects';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+function randomCode(length: number = 6): string {
+  const min = Math.pow(10, length);
+  return "" + Math.floor(min + 9 * min * Math.random());
+}
