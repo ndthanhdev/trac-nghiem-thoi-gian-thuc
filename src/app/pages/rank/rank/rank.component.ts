@@ -17,9 +17,6 @@ import { initSocket, socketOnEventObservable } from '../../../services/socket';
 import { Subscription } from 'rxjs/Subscription';
 import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators/filter';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/timer'
-import 'rxjs/add/operator/take'
 
 @Component({
   selector: 'app-rank',
@@ -42,8 +39,8 @@ export class RankComponent implements OnInit, OnDestroy {
   private routeSub: Subscription;
   code = localStorage.getItem("code");
 
-  isStarted$ = this.store.select(fromReducer.getGameIsStarted);
-  time$ = this.store.select(fromReducer.getGameTime);
+  // isStarted$ = this.store.select(fromReducer.getGameIsStarted);
+  // time$ = this.store.select(fromReducer.getGameTime);
 
   coutndown: number;
 
@@ -53,6 +50,10 @@ export class RankComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.socketWaitingSub = this.store.select(fromReducer.getGameCode)
       .filter(gameCode => !!gameCode)
+      .do(gameCode => {
+        console.log("gc:", gameCode);
+        return gameCode;
+      })
       .flatMap(gameCode => initSocket('http://172.16.2.41:8080', { query: { gameCode } }))
       .flatMap(socket => socketOnEventObservable(socket, 'waiting'))
       .subscribe(result => {
@@ -97,8 +98,8 @@ export class RankComponent implements OnInit, OnDestroy {
 
   startGame() {
     this.store.dispatch(new fromAction.StartGame({ code: this.code }));
-    let h = 3600;
-    Observable.timer(0, 1000).take(3600).map(() => this.store.dispatch(new fromAction.CountDown()));
+    // let h = 3600;
+    // Observable.timer(0, 1000).take(3600).map(() => this.store.dispatch(new fromAction.CountDown()));
   }
 
 }

@@ -34,7 +34,7 @@ export class CreateGameEffects {
                     [
                         // new fromRootActions.Go({ path: ["/rank"] }),
                         new fromActions.NextSuccess(nextActionPayload),
-                        new fromRankActions.SetState({ state: <any>nextActionPayload }),
+                        // new fromRankActions.SetState({ state: <any>nextActionPayload }),
                     ]);
             })
             .catch(() => of(new fromActions.NextFailure())));

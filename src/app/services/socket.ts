@@ -7,7 +7,12 @@ import { Observable } from 'rxjs/Observable';
 import io from 'socket.io-client';
 
 
-export const initSocket = (url, options) => Observable.of(io(url, options));
+export const initSocket = (url, options) => {
+  console.log("init sk");
+
+ return  Observable.of(io(url, options))
+}
+  ;
 // options: { query: { gameCode } }
 
 export const socketOnEventObservable = (socket, event) =>

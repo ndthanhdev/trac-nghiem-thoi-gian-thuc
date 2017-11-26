@@ -20,6 +20,7 @@ export interface State {
 }
 
 export const initialState: State = {
+    // code:"3333",
     code: localStorage.getItem("code"), // abc
     users: [{
         username: null,
@@ -37,7 +38,7 @@ export function reducer(state = initialState, { type, payload }): State {
         case fromAction.StartGameSucess:
             return { ...payload };
         case fromAction.COUNT_DOWN:
-            return { ...payload, time: payload.time-1 };
+            return { ...payload, time: state.time-1 };
         default:
             return state;
     }
